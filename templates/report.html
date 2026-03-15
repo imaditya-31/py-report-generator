@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Placement Analytics Report</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --ink: #0f1117;
+        --muted: #6b7280;
+        --accent: #1a56db;
+        --accent2: #0e9f6e;
+        --accent3: #e3a008;
+        --surface: #ffffff;
+        --bg: #f4f6fb;
+        --border: #e5e7eb;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      /* TOPBAR */
+      .topbar {
+        background: linear-gradient(135deg, #0d2e7a 0%, #1a56db 100%);
+        padding: 0 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 12px rgba(13, 46, 122, 0.25);
+      }
+
+      .topbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .logo-mark {
+        width: 32px;
+        height: 32px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Playfair Display", serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+      }
+      .brand-name {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .brand-sub {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.55);
+      }
+
+      .print-btn {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 8px;
+        padding: 8px 18px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: background 0.2s;
+      }
+      .print-btn:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+      .print-btn svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* MAIN */
+      main {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 4rem;
+      }
+
+      /* HERO */
+      .hero {
+        background: linear-gradient(
+          135deg,
+          #0d2e7a 0%,
+          #1a56db 60%,
+          #3b5cf6 100%
+        );
+        border-radius: 20px;
+        padding: 3rem 3rem 2.5rem;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 2rem;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        right: -60px;
+        top: -60px;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        left: 40%;
+        bottom: -80px;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .hero-tag {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 4px 14px;
+        border-radius: 99px;
+        margin-bottom: 1.25rem;
+      }
+      .hero h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 2.25rem;
+        line-height: 1.15;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+      }
+      .hero-para {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9rem;
+        font-weight: 300;
+        max-width: 600px;
+        line-height: 1.8;
+        position: relative;
+        z-index: 1;
+      }
+      .hero-para strong {
+        color: #fff;
+        font-weight: 600;
+      }
+
+      /* STAT CARDS */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .stat-card {
+        background: var(--surface);
+        border-radius: 14px;
+        padding: 1.4rem 1.5rem;
+        border: 1px solid var(--border);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        border-radius: 14px 14px 0 0;
+      }
+      .stat-card.blue::before {
+        background: var(--accent);
+      }
+      .stat-card.green::before {
+        background: var(--accent2);
+      }
+      .stat-card.amber::before {
+        background: var(--accent3);
+      }
+      .stat-card.indigo::before {
+        background: #7c3aed;
+      }
+      .stat-card.pink::before {
+        background: #e11d48;
+      }
+      .stat-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 500;
+        margin-bottom: 0.4rem;
+      }
+      .stat-value {
+        font-family: "Playfair Display", serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--ink);
+        line-height: 1;
+      }
+      .stat-unit {
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.9rem;
+        color: var(--muted);
+        font-weight: 400;
+        margin-left: 2px;
+      }
+
+      /* SECTION CARD */
+      .section-card {
+        background: var(--surface);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+      }
+      .section-header {
+        padding: 1.25rem 1.75rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .section-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .section-icon.blue {
+        background: #eff6ff;
+      }
+      .section-icon.green {
+        background: #ecfdf5;
+      }
+      .section-icon.purple {
+        background: #f5f3ff;
+      }
+      .section-icon svg {
+        width: 16px;
+        height: 16px;
+      }
+      .section-icon.blue svg {
+        stroke: var(--accent);
+      }
+      .section-icon.green svg {
+        stroke: var(--accent2);
+      }
+      .section-icon.purple svg {
+        stroke: #7c3aed;
+      }
+      .section-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .section-body {
+        padding: 1.75rem;
+      }
+      .chart-wrap {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      /* SEARCH + TABLE */
+      .search-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 1rem 1.75rem;
+        border-bottom: 1px solid var(--border);
+        background: #fafbff;
+      }
+      .search-wrap svg {
+        width: 16px;
+        height: 16px;
+        stroke: var(--muted);
+        flex-shrink: 0;
+      }
+      .search-input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.875rem;
+        color: var(--ink);
+        outline: none;
+      }
+      .search-input::placeholder {
+        color: var(--muted);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+      }
+      thead tr {
+        background: #f8faff;
+      }
+      thead th {
+        padding: 0.75rem 1.25rem;
+        text-align: left;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        border-bottom: 1px solid var(--border);
+      }
+      tbody tr {
+        border-bottom: 1px solid #f3f4f6;
+        transition: background 0.15s;
+      }
+      tbody tr:last-child {
+        border-bottom: none;
+      }
+      tbody tr:hover {
+        background: #f8faff;
+      }
+      tbody td {
+        padding: 0.85rem 1.25rem;
+        color: var(--ink);
+      }
+      tbody td:nth-child(4) {
+        font-weight: 600;
+        color: var(--accent2);
+      }
+      .badge-branch {
+        display: inline-block;
+        background: #eff6ff;
+        color: var(--accent);
+        font-size: 0.72rem;
+        font-weight: 500;
+        padding: 2px 8px;
+        border-radius: 99px;
+      }
+
+      /* FOOTER */
+      .report-footer {
+        text-align: center;
+        padding-top: 2rem;
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      /* PRINT */
+      @media print {
+        .topbar,
+        .print-btn,
+        .search-wrap {
+          display: none !important;
+        }
+        body {
+          background: #fff;
+        }
+        .section-card,
+        .stat-card {
+          box-shadow: none;
+          border: 1px solid #e5e7eb;
+        }
+        main {
+          padding: 1rem;
+        }
+        .hero {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="topbar">
+      <div class="topbar-brand">
+        <div class="logo-mark">P</div>
+        <div>
+          <div class="brand-name">Placement Analytics</div>
+          <div class="brand-sub">Training &amp; Placement Cell</div>
+        </div>
+      </div>
+      <button class="print-btn" onclick="window.print()">
+        <svg
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.056 48.056 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z"
+          />
+        </svg>
+        Print / Save PDF
+      </button>
+    </nav>
+
+    <main>
+      <!-- HERO -->
+      <div class="hero">
+        <div class="hero-tag">
+          Placement Report &middot; Academic Year 2024&ndash;25
+        </div>
+        <h1>Executive Summary</h1>
+        <p class="hero-para">
+          During this period,
+          <strong>{{summary.total_drives}}</strong> placement drives were
+          conducted. A total of <strong>{{summary.appeared}}</strong> students
+          participated, out of which <strong>{{summary.placed}}</strong> were
+          successfully placed, achieving an overall placement rate of
+          <strong>{{summary.percentage}}%</strong>. The highest offered package
+          was <strong>{{summary.highest_package}} LPA</strong>, while the
+          average package stood at <strong>{{summary.avg_package}} LPA</strong>.
+        </p>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="stat-label">Total Drives</div>
+          <div class="stat-value">{{summary.total_drives}}</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Students Placed</div>
+          <div class="stat-value">{{summary.placed}}</div>
+        </div>
+        <div class="stat-card indigo">
+          <div class="stat-label">Appeared</div>
+          <div class="stat-value">{{summary.appeared}}</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-label">Avg Package</div>
+          <div class="stat-value">
+            {{summary.avg_package}}<span class="stat-unit">LPA</span>
+          </div>
+        </div>
+        <div class="stat-card pink">
+          <div class="stat-label">Highest Package</div>
+          <div class="stat-value">
+            {{summary.highest_package}}<span class="stat-unit">LPA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHART 1 -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-icon blue">
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"
+              />
+            </svg>
+          </div>
+          <span class="section-title">Campus Drive Analysis</span>
+        </div>
+        <div class="section-body">
+          <div class="chart-wrap">{{chart | safe}}</div>
+        </div>
+      </div>
+
+      <!-- CHART 2 -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-icon green">
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75"
+              />
+            </svg>
+          </div>
+          <span class="section-title">Company-wise Placement Analysis</span>
+        </div>
+        <div class="section-body">
+          <div class="chart-wrap">{{company_chart | safe}}</div>
+          <p style="margin-top: 1rem; color: var(--muted); font-size: 0.82rem">
+            Distribution of placements among participating companies during the
+            reported period.
+          </p>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-icon purple">
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+              />
+            </svg>
+          </div>
+          <span class="section-title">Placed Students</span>
+        </div>
+
+        <div class="search-wrap">
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+            />
+          </svg>
+          <input
+            class="search-input"
+            id="searchInput"
+            placeholder="Search by name, company, branch…"
+          />
+        </div>
+
+        <table id="studentTable">
+          <thead>
+            <tr>
+              <th>Student Name</th>
+              <th>Branch</th>
+              <th>Company</th>
+              <th>Package</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in students or [] %}
+            <tr>
+              <td>{{s[0]}}</td>
+              <td><span class="badge-branch">{{s[1]}}</span></td>
+              <td>{{s[2]}}</td>
+              <td>{{s[3]}} LPA</td>
+              <td>{{s[4]}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="report-footer">
+        Generated by Placement Analytics Portal &nbsp;&middot;&nbsp; Training
+        &amp; Placement Cell
+      </div>
+    </main>
+
+    <script>
+      document
+        .getElementById("searchInput")
+        .addEventListener("keyup", function () {
+          const val = this.value.toLowerCase();
+          document.querySelectorAll("#studentTable tbody tr").forEach((row) => {
+            row.style.display = row.innerText.toLowerCase().includes(val)
+              ? ""
+              : "none";
+          });
+        });
+    </script>
+  </body>
+</html>
