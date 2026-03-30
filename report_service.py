@@ -4,22 +4,33 @@ def get_summary():
     conn = get_conn()
     c = conn.cursor()
 
-    c.execute("SELECT COUNT(*), SUM(appeared), SUM(placed), MAX(package), AVG(package) FROM events")
+    c.execute("""
+        SELECT 
+            COUNT(*) as total_drives,
+            SUM(appeared) as total_appeared,
+            SUM(placed) as total_placed,
+            MAX(highest_package) as highest_package,
+            AVG(avg_package) as avg_package
+        FROM events
+    """)
+    
     row = c.fetchone()
 
     total_drives = row[0] or 0
     appeared = row[1] or 0
     placed = row[2] or 0
+    highest_package = row[3] or 0.0
+    avg_package = row[4] or 0.0
 
-    percentage = (placed / appeared * 100) if appeared else 0
+    percentage = (placed / appeared * 100) if appeared > 0 else 0
 
     summary = {
         "total_drives": total_drives,
         "appeared": appeared,
         "placed": placed,
         "percentage": round(percentage, 2),
-        "highest_package": row[3] or 0,
-        "avg_package": round(row[4] or 0, 2)
+        "highest_package": round(highest_package, 2),
+        "avg_package": round(avg_package, 2)
     }
 
     conn.close()
